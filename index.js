@@ -3,25 +3,29 @@
 // Başlangıç Challenge'ı
 
 /**Örnek Görev: İlkini Dön
- * 
+ *
  * Bu örnek sonradan gelecek olan görevleri nasıl çözeceğinizi size gösterecek.
- * 
+ *
  * Aşağdıaki Yüksek dereceden fonskiyonu(higher-order function) kullanarak aşağıdakileri yapınız
  *  1. Stringlerden oluşan bir array'i parametre olarak alın
- *  2. Bir string'i değişken olarak alan bir callback fonksiyonunu parametre olarak alın 
+ *  2. Bir string'i değişken olarak alan bir callback fonksiyonunu parametre olarak alın
  *  3. Array'in İLK elemanını değişken olarak alarak çalışacak olan callback fonksiyonunun sonucunu dönün
- * 
+ *
  * Aşağıdaki kodlar bu görevin nasıl yapılacağına örnek olacaktır
  * Bu fonskiyon 'asas' dönmeli(return)
-*/
+ */
 
 function ilkiniDon(stringArray, callback) {
-  return callback(stringArray[0])
+  return callback(stringArray[0]);
 }
-console.log('örnek görev:', ilkiniDon(['as','sa'],function(metin){return metin+metin}));
+console.log(
+  "örnek görev:",
+  ilkiniDon(["as", "sa"], function (metin) {
+    return metin + metin;
+  })
+);
 
 // Başlangıç Challenge'ı Sonu
-
 
 ///// M V P ///////
 
@@ -30,18 +34,22 @@ console.log('örnek görev:', ilkiniDon(['as','sa'],function(metin){return metin
   Aşağıdaki skor1 ve skor2 kodlarını inceleyiniz ve aşağıdaki soruları altına not alarak cevaplayın
   
   1. skor1 ve skor2 arasındaki fark nedir?
-  
+   Cevap 1 = skor1 skope(function scope) kullanılarak oluşturulan skorArtirici() fonkisyonundan return edilen değerle çağırılır. Skor değeri globalden çağırıldığında undefined çıktısını console da verir .
+  skor2 ise globalde(global scope) belirlenen skor değişkeni üzerinden yürütülür 0 değeri tutar.
   2. Hangisi bir closure kullanmaktadır? Nasıl tarif edebilirsin? (yarınki derste öğreneceksin :) )
   
   3. Hangi durumda skor1 tercih edilebilir? Hangi durumda skor2 daha mantıklıdır?
+  Çoğu durumda global scope tercih edilmez . Sebebi ise değişkenlerimizin ram de fazla yer tutmasını istememizdir . Local scope da değişkenler işlevinden sonra silinir
+  ve ram de yer tutmaz . Projemizde her an ihtiyacımız olan durumlar için global scope kullanabiliriz. 
 */
 
 // skor1 kodları
 function skorArtirici() {
   let skor = 0;
+
   return function skorGuncelle() {
-   return skor++;
-  }
+    return skor++;
+  };
 }
 
 const skor1 = skorArtirici();
@@ -52,8 +60,6 @@ let skor = 0;
 function skor2() {
   return skor++;
 }
-
-
 /* Görev 2: takimSkoru() 
 Aşağıdaki takimSkoru() fonksiyonununda aşağıdakileri yapınız:
   1. Bir çeyrekte bir takımın ürettiği skoru rastgele(random) elde eden bir sonuc dönünüz(return)
@@ -64,12 +70,12 @@ Aşağıdaki takimSkoru() fonksiyonununda aşağıdakileri yapınız:
 Not: Bu fonskiyon, aşağıdaki diğer görevler için de bir callback fonksiyonu olarak da kullanılacak
 */
 
-function takimSkoru(/*Kodunuzu buraya yazınız*/){
-    /*Kodunuzu buraya yazınız*/
+function takimSkoru() {
+  let takim1ceyrek = Math.floor(Math.random() * 16) + 10;
+  let takim2ceyrek = Math.floor(Math.random() * 16) + 10;
+  return takim1ceyrek;
 }
-
-
-
+console.log(takimSkoru());
 
 /* Görev 3: macSonucu() 
 Aşağıdaki macSonucu() fonksiyonununda aşağıdakileri yapınız:
@@ -84,16 +90,34 @@ Aşağıdaki macSonucu() fonksiyonununda aşağıdakileri yapınız:
   "EvSahibi": 92,
   "KonukTakim": 80
 }
-*/ 
+*/
 
-function macSonucu(/*Kodunuzu buraya yazınız*/){
-  /*Kodunuzu buraya yazınız*/
+function macSonucu(takimSkoru, ceyrekDegeri) {
+  function takimSkoru() {
+    let toplamSkor1Dizisi = [];
+    let toplamSkor2Dizisi = [];
+    let sonuc1 = 0;
+    let sonuc2 = 0;
+    let takimSonuclari = { EvSahibi: 0, KonukTakim: 0 };
+    for (let i = 0; i < ceyrekDegeri; i++) {
+      let takim1ceyrek = Math.floor(Math.random() * 16) + 10;
+      toplamSkor1Dizisi.push(takim1ceyrek);
+      sonuc1 = sonuc1 + takim1ceyrek;
+
+      let takim2ceyrek = Math.floor(Math.random() * 16) + 10;
+      toplamSkor2Dizisi.push(takim2ceyrek);
+      sonuc2 += takim2ceyrek;
+    }
+    takimSonuclari.EvSahibi = sonuc1;
+    takimSonuclari.KonukTakim = sonuc2;
+
+    return takimSonuclari;
+  }
+
+  return takimSkoru();
 }
 
-
-
-
-
+console.log(macSonucu(takimSkoru, 4));
 
 /* Zorlayıcı Görev 4: periyotSkoru()
 Aşağıdaki periyotSkoru() fonksiyonununda aşağıdakileri yapınız:
@@ -108,12 +132,20 @@ Aşağıdaki periyotSkoru() fonksiyonununda aşağıdakileri yapınız:
 }
   */
 
+function periyotSkoru(takimlarCeyrekSkoru) {
+  const ceyrekSonuclari = { EvSahibi: 0, KonukTakim: 0 };
 
-function periyotSkoru(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
+  function takimlarCeyrekSkoru() {
+    let takim1ceyrek = Math.floor(Math.random() * 16) + 10;
+    let takim2ceyrek = Math.floor(Math.random() * 16) + 10;
+    ceyrekSonuclari.EvSahibi = takim1ceyrek;
+    ceyrekSonuclari.KonukTakim = takim2ceyrek;
+    return ceyrekSonuclari;
+  }
 
+  return takimlarCeyrekSkoru();
 }
-
+console.log(periyotSkoru(takimSkoru));
 
 /* Zorlayıcı Görev 5: skorTabelasi() 
 Aşağıdaki skorTabelasi() fonksiyonunu kullanarak aşağıdakileri yapınız:
@@ -146,17 +178,43 @@ MAÇ UZAR ise skorTabelasi(periyotSkoru,takimSkoru,4)
 ] */
 // NOTE: Bununla ilgili bir test yoktur. Eğer logladığınız sonuçlar yukarıdakine benziyor ise tmamlandı sayabilirsiniz.
 
-function skorTabelasi(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
+function skorTabelasi(periyotSkoru, takimSkoru, ceyrekSayaci) {
+  function periyotSkoru(takimlarCeyrekSkoru) {
+    const ceyrekSonuclari = [];
+    let takim1Toplam = 0;
+    let takim2Toplam = 0;
+    function takimSkoru() {
+      for (let i = 0; i <= ceyrekSayaci - 1; i++) {
+        let takim1ceyrek = Math.floor(Math.random() * 16) + 10;
+        takim1Toplam += takim1ceyrek;
+        let takim2ceyrek = Math.floor(Math.random() * 16) + 10;
+        takim2Toplam += takim2ceyrek;
+        ceyrekSonuclari[i] =
+          i +
+          1 +
+          ". Periyot : Ev Sahibi " +
+          takim1ceyrek +
+          " - Konuk Takım : " +
+          takim2ceyrek;
+      }
+      if (takim1Toplam != takim2Toplam) {
+        let macSonucuDegeri = `Maç sonucu : Ev Sahibi ${takim1Toplam} - Konuk Takim ${takim2Toplam}`;
+
+        ceyrekSonuclari.push(macSonucuDegeri);
+        return ceyrekSonuclari;
+      }
+    }
+    return takimSkoru();
+  }
+  return periyotSkoru();
 }
 
-
-
+console.log(skorTabelasi(periyotSkoru, takimSkoru, 4));
 
 /* Aşağıdaki satırları lütfen değiştirmeyiniz*/
-function sa(){
-  console.log('Kodlar çalışıyor');
-  return 'as';
+function sa() {
+  console.log("Kodlar çalışıyor");
+  return "as";
 }
 sa();
 module.exports = {
@@ -168,4 +226,4 @@ module.exports = {
   macSonucu,
   periyotSkoru,
   skorTabelasi,
-}
+};
